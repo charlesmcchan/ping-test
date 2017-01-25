@@ -1,0 +1,23 @@
+---
+- name: Connectivity test for hosts
+  hosts: mgmt-host
+  tasks:
+    - name: Ping between hosts
+      command: ping -I eth1 -c 1 -W 1 {{ item }}
+      changed_when: false
+      ignore_errors: yes
+      with_items: "{{ groups['fabric-host'] }}"
+    - name: Ping from hosts to Google public DNS
+      command: ping -I eth1 -c 1 -W 1 {{ item }}
+      changed_when: false
+      ignore_errors: yes
+      with_items: "{{ groups['internet'] }}"
+
+- name: Connectivity test for quagga
+  hosts: mgmt-quagga
+  tasks:
+    - name: Ping from quagga to upstream
+      command: ping -I eth1 -c 1 -W 1 {{ item }}
+      changed_when: false
+      ignore_errors: yes
+      with_items: "{{ groups['upstream'] }}"
