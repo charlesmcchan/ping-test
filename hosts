@@ -1,20 +1,33 @@
-[mgmt-host]
+[v4host-mgmt]
 10.128.0.211 ansible_connection=ssh ansible_user=mininet
 10.128.0.212 ansible_connection=ssh ansible_user=mininet
 10.128.0.214 ansible_connection=ssh ansible_user=mininet
 10.128.0.215 ansible_connection=ssh ansible_user=mininet
 
-[mgmt-quagga]
+[v6host-mgmt]
+10.128.0.219 ansible_connection=ssh ansible_user=admin
+10.128.0.220 ansible_connection=ssh ansible_user=admin
+10.128.0.221 ansible_connection=ssh ansible_user=admin
+
+[quagga-mgmt]
 10.128.0.213 ansible_connection=ssh ansible_user=mininet
 
-[fabric-host]
+[v4host-fabric]
 10.0.1.10
 10.0.1.20
 10.0.2.5
 10.0.2.15
 
+[v6host-fabric]
+2000::1
+2000::2
+2000::101
+
 [upstream]
 192.168.101.1
 
-[internet]
+[google-dns-v4]
 8.8.8.8
+
+[google-dns-v6]
+2001:4860:4860::8888
