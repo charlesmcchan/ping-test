@@ -3,12 +3,12 @@
   hosts: v4host-mgmt
   tasks:
     - name: Ping between IPv4 hosts
-      command: ping -I eth1 -c 1 -W 1 {{ item }}
+      command: ping -c 1 -W 2 {{ item }}
       changed_when: false
       ignore_errors: yes
       with_items: "{{ groups['v4host-fabric'] }}"
     - name: Ping from hosts to Google public DNS IPv4
-      command: ping -I eth1 -c 1 -W 1 {{ item }}
+      command: ping -c 1 -W 2 {{ item }}
       changed_when: false
       ignore_errors: yes
       with_items: "{{ groups['google-dns-v4'] }}"
@@ -17,12 +17,12 @@
   hosts: v6host-mgmt
   tasks:
     - name: Ping between IPv6 hosts
-      command: ping6 -I eth1 -c 1 -W 1 {{ item }}
+      command: ping6 -c 1 -W 2 {{ item }}
       changed_when: false
       ignore_errors: yes
       with_items: "{{ groups['v6host-fabric'] }}"
-    - name: Ping6 from hosts to Google public DNS IPv6
-      command: ping -I eth1 -c 1 -W 1 {{ item }}
+    - name: Ping6 from hosts to the fake IPv6 subnet announced by upstream
+      command: ping6 -c 1 -W 2 {{ item }}
       changed_when: false
       ignore_errors: yes
       with_items: "{{ groups['google-dns-v6'] }}"
@@ -30,8 +30,13 @@
 - name: Connectivity test for quagga
   hosts: quagga-mgmt
   tasks:
-    - name: Ping from quagga to upstream
-      command: ping -I eth1 -c 1 -W 1 {{ item }}
+    - name: Ping from quagga to upstream IPv4
+      command: ping -c 1 -W 2 {{ item }}
       changed_when: false
       ignore_errors: yes
-      with_items: "{{ groups['upstream'] }}"
+      with_items: "{{ groups['upstream-v4'] }}"
+    - name: Ping from quagga to upstream IPv6
+      command: ping6 -c 1 -W 2 {{ item }}
+      changed_when: false
+      ignore_errors: yes
+      with_items: "{{ groups['upstream-v6'] }}"
